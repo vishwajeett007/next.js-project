@@ -5,7 +5,7 @@ import { useBudgetStore } from '@/store/useBudgetStore';
 import axios from 'axios';
 import { Wifi, WifiOff, RefreshCw, CheckCircle2, Clock } from 'lucide-react';
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 export default function SyncStatus() {
     const { data, syncStatus, lastSynced, setSyncStatus, setLastSynced } = useBudgetStore();
@@ -81,8 +81,8 @@ export default function SyncStatus() {
                 onClick={handleSync}
                 disabled={!isOnline || isSyncing}
                 className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold transition-all duration-300 ${isOnline && !isSyncing
-                        ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20'
-                        : 'bg-white/5 text-gray-500 cursor-not-allowed'
+                    ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20'
+                    : 'bg-white/5 text-gray-500 cursor-not-allowed'
                     }`}
             >
                 <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
