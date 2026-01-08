@@ -8,7 +8,13 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
-app.use(cors());
+if (!process.env.FRONTEND_URL) {
+    throw new Error('FRONTEND_URL environment variable is not set');
+}
+app.use(cors({
+    origin: [process.env.FRONTEND_URL,'http://localhost:3000'],
+    credentials: true,
+}));
 app.use(express.json());
 
 // Mock DB for demonstration if PostgreSQL is not connected

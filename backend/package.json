@@ -8,7 +8,7 @@
     "dev": "nodemon --exec node --loader ts-node/esm src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --loader ts-node/esm src/server.ts",
-    "deploy":"npx tsc && node dist/server.js"
+    "deploy": "npx tsc && node dist/server.js"
   },
   "keywords": [],
   "author": "",
