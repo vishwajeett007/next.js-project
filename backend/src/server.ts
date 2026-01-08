@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ if (!process.env.FRONTEND_URL) {
     throw new Error('FRONTEND_URL environment variable is not set');
 }
 app.use(cors({
-    origin: [process.env.FRONTEND_URL,'http://localhost:3000'],
+    origin: [process.env.FRONTEND_URL, 'http://localhost:3000'],
     credentials: true,
 }));
 app.use(express.json());
@@ -55,6 +56,7 @@ app.post('/api/budget/sync', async (req: Request, res: Response) => {
 
         // Always update mock for demo
         mockBudget = { ...budget, lastUpdated: new Date().toISOString() };
+        fs.writeFileSync('budget.json', JSON.stringify(budget));
 
         res.status(200).json({
             success: true,
@@ -75,8 +77,9 @@ app.get('/api/budget/latest', async (req: Request, res: Response) => {
                 return res.json(result.rows[0].data);
             }
         }
-
-        res.json(mockBudget);
+        const budget = fs.readFileSync('budget.json', 'utf-8');
+        const budgetData = JSON.parse(budget);
+        res.json(budgetData);
     } catch (error) {
         console.error('Fetch error:', error);
         res.status(500).json({ success: false, message: 'Failed to fetch latest budget' });
